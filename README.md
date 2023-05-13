@@ -2,6 +2,9 @@
 
 ### MariaDB Enterprise Server / MaxScale Proxy High Availability
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mgFaKAwqaBM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+
 #### About:
 
 This is a [Terraform](https://www.terraform.io/) and [Ansible](https://www.ansible.com/) project to provision a **high availability** [MariaDB Enterprise
