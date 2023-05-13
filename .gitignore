@@ -1,0 +1,3 @@
+terraform-mdb.tfvars
+terraform-ks.tfvars
+terraform-private.tfvars
