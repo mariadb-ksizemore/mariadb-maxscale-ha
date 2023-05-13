@@ -2,7 +2,7 @@
 
 ### MariaDB Enterprise Server / MaxScale Proxy High Availability
 
-[![youtube](https://github.com/mariadb-ksizemore/mariadb-maxscale-ha/blob/main/youtube.jpg)](https://www.youtu.be/mgFaKAwqaBM) 
+[![youtube](https://github.com/mariadb-ksizemore/mariadb-maxscale-ha/blob/main/youtube.jpg)](https://youtu.be/mgFaKAwqaBM) 
 
 #### About:
 
