@@ -68,4 +68,5 @@ STEPS:
 `javac -cp mariadb-java-client-3.1.4.jar javademo.java`
 
 3. Execute the code:
+
 `java -cp mariadb-java-client-3.1.4.jar:. javademo`
