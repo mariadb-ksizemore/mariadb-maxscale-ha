@@ -1,0 +1,22 @@
+mdb1 ansible_host=mdb1.mydomain.com
+mdb2 ansible_host=mdb2.mydomain.com
+mdb3 ansible_host=mdb3.mydomain.com
+mx1 ansible_host=mx1.mydomain.com
+mx2 ansible_host=mx2.mydomain.com
+
+mdb1_private ansible_host=mdb1.internal
+mdb2_private ansible_host=mdb2.internal
+mdb3_private ansible_host=mdb3.internal
+mx1_private ansible_host=mx1.internal
+mx2_private ansible_host=mx2.internal
+
+[primary]
+mdb1
+
+[replicas]
+mdb2
+mdb3
+
+[maxscale]
+mx1
+mx2

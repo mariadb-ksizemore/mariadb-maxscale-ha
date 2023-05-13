@@ -1,0 +1,27 @@
+---
+
+# AWS Configuration
+aws_region: us-west-2
+aws_zone: us-west-2a
+
+# Version Configuration
+mariadb_version: 10.6
+maxscale_version: 22.08
+
+# MariaDB Enterprise Token
+enterprise_token: a7c52fa7-9d2f-4ba1-851c-8591ef536f20
+
+# Database Credentials
+admin_user: admin
+admin_pass: AdM1n8ss-7ddh8
+maxscale_user: maxscale
+maxscale_pass: MaX$c@leP@ssw0rd
+repli_user: repli
+repli_pass: MaX$c@leP@ssw0rd
+
+# Private IPs
+mdb1_private: 10.0.13.233
+mdb2_private: 10.0.2.83
+mdb3_private: 10.0.6.33
+mx1_private: 10.0.9.10
+mx2_private: 10.0.5.65

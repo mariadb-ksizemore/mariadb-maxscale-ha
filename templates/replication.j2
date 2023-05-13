@@ -1,0 +1,12 @@
+gtid_strict_mode                	= ON
+log_slave_updates               	= ON
+{% if 'db1' in inventory_hostname %}
+read_only                       	= OFF
+{% else %}
+read_only                       	= ON
+{% endif %}
+relay_log                       	= /var/log/mariadb/mariadb-relay
+relay_log_index                 	= /var/log/mariadb/mariadb-relay.index
+relay-log-info-file             	= /var/log/mariadb/mariadb-relay.info
+report_host                     	= {{ inventory_hostname }}
+sysdate_is_now                  	= ON

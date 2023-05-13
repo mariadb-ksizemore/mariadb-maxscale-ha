@@ -1,0 +1,104 @@
+---
+
+- hosts: "primary"
+  become: yes
+  become_user: root
+  vars_files:
+    - '../inventory/group_vars/distro/{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml'
+
+  tasks:
+
+  - name: "Turn Off Strict Password"
+    mysql_variables:
+      variable: strict_password_validation
+      value: 'OFF'
+      login_unix_socket: '{{ mariadb_socket }}'
+    no_log: true
+
+  - name: "Removing 'Test' Database If Exists"
+    mysql_db:
+      name: test
+      state: absent
+      login_unix_socket: '{{ mariadb_socket }}'
+    no_log: true
+
+  - name: "Adding '{{ admin_user }}'@'%'"
+    mysql_user:
+      name: '{{ admin_user }}'
+      host: '%'
+      password: '{{ admin_pass }}'
+      update_password: on_create
+      priv: '*.*:ALL,GRANT'
+      state: present
+      login_unix_socket: '{{ mariadb_socket }}'
+    no_log: true
+
+  - name: "Adding '{{ maxscale_user }}' User To Database"
+    mysql_user:
+      name: '{{ maxscale_user }}'
+      host: '%'
+      password: '{{ maxscale_pass }}'
+      update_password: on_create
+      priv: '*.*:SHOW DATABASES,BINLOG ADMIN,READ_ONLY ADMIN,RELOAD,REPLICATION MASTER ADMIN,REPLICATION SLAVE ADMIN,REPLICATION SLAVE,SLAVE MONITOR/mysql.*:SELECT'
+      state: present
+      login_unix_socket: '{{ mariadb_socket }}'
+    no_log: true
+
+  - name: "Adding '{{ repli_user }} User To Database"
+    mysql_user:
+      name: '{{ repli_user }}'
+      host: '%'
+      password: '{{ repli_pass }}'
+      update_password: on_create
+      priv: '*.*:REPLICATION MASTER ADMIN,REPLICATION SLAVE ADMIN,REPLICATION SLAVE,SLAVE MONITOR'
+      state: present
+      login_unix_socket: '{{ mariadb_socket }}'
+    no_log: true
+
+  - name: "Turn On Strict Password"
+    mysql_variables:
+      variable: strict_password_validation
+      value: 'ON'
+      login_unix_socket: '{{ mariadb_socket }}'
+
+- hosts: "replicas"
+  become: yes
+  become_user: root
+  vars_files:
+    - '../inventory/group_vars/distro/{{ ansible_distribution|lower }}{{ ansible_distribution_major_version }}.yml'
+
+  tasks:
+
+  - name: "Setting Replicas Read Only"
+    mysql_variables:
+      variable: read_only
+      value: '1'
+      login_unix_socket: '{{ mariadb_socket }}'
+
+  - name: "Stopping Replicas"
+    mysql_replication:
+      mode: stopreplica
+      login_unix_socket: '{{ mariadb_socket }}'
+
+  - name: "Resetting Replicas"
+    mysql_replication:
+      mode: resetreplica
+      login_unix_socket: '{{ mariadb_socket }}'
+
+  - name: "Setting Primary Info"
+    mysql_replication:
+      mode: changeprimary
+      master_host: '{{ mdb1_private }}'
+      master_user: '{{ repli_user }}'
+      master_password: '{{ repli_pass }}'
+      login_unix_socket: '{{ mariadb_socket }}'
+    no_log: true
+
+  - name: "Converting to MariaDB GTID"
+    command: mysql -e "CHANGE MASTER TO master_use_gtid=slave_pos";
+
+  - name: "Starting Replicas"
+    mysql_replication:
+      mode: startreplica
+      login_unix_socket: '{{ mariadb_socket }}'
+

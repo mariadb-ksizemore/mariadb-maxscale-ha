@@ -1,0 +1,88 @@
+###############################################################
+# General Settings
+###############################################################
+[client-server]
+socket                          	= {{ mariadb_socket }}
+
+[mysql]
+default_character_set           	= utf8
+socket                          	= {{ mariadb_socket }}
+
+[mysqld_safe]
+basedir                         	= /usr/
+
+[mysqld]
+basedir                         	= /usr/
+character_set_server            	= utf8
+collation_server                	= utf8_general_ci
+datadir                         	= /var/lib/mysql
+default_storage_engine          	= InnoDB
+event_scheduler
+gtid_domain_id                  	= 1
+ignore_db_dirs                  	= lost+found
+init_connect                    	= 'SET NAMES utf8'
+performance_schema
+server_id                       	= {{ inventory_hostname[-1] }}
+tmpdir                          	= /tmp
+user                            	= mysql
+userstat                        	= ON
+
+################################################################
+# Safety, Security & Recovery
+################################################################
+explicit_defaults_for_timestamp 	= ON
+log_bin_trust_function_creators 	= ON
+max_allowed_packet              	= 32M
+max_connect_errors              	= 1000000
+myisam_recover_options          	= FORCE,BACKUP
+symbolic_links                  	= 0
+
+################################################################
+# Caches, Buffers & Connections
+################################################################
+interactive_timeout             	= 600
+max_connections                 	= 500
+open_files_limit                	= 65535
+query_cache_size                	= 0
+query_cache_type                	= 0
+table_definition_cache          	= 4096
+table_open_cache                	= 4096
+wait_timeout                    	= 600
+
+################################################################
+# MySQL Logs
+################################################################
+binlog_format                   	= MIXED
+binlog_row_image                	= FULL
+expire_logs_days                	= 3
+log_bin                         	= /var/log/mariadb/mariadb-bin
+log_bin_index                   	= /var/log/mariadb/mariadb-bin.index
+log_error                       	= /var/log/mariadb/mariadb-error.log
+log_queries_not_using_indexes   	= OFF
+log_slow_verbosity              	= query_plan,innodb,explain
+log_warnings                    	= 2
+long_query_time                 	= 5
+slow_query_log                  	= ON
+slow_query_log_file             	= /var/log/mariadb/mariadb-slow.log
+sync_binlog                     	= 0
+
+################################################################
+# InnoDB Variables
+################################################################
+innodb_defragment               	= ON
+innodb_file_per_table           	= ON
+innodb_flush_log_at_trx_commit  	= 1
+innodb_flush_method             	= O_DIRECT
+
+################################################################
+# Standard Replication Settings
+################################################################
+{% if replication_on == 1 %}
+{% include 'replication.j2' %}
+{% raw %}
+{% endraw %}
+{% else %}
+{% filter comment('plain',prefix='',postfix='') %}
+{% include 'replication.j2' %}
+{% endfilter %}
+{% endif %}
