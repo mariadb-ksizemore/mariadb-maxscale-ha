@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/mariadb-corporation/mariadb-community-columnstore-docker/master/MDB-HLogo_RGB.jpg)
+![logo](https://mariadb.com/wp-content/uploads/2019/11/mariadb-logo_blue-transparent-600x150.png)
 
 ### MariaDB Enterprise Server / MaxScale Proxy High Availability
 
