@@ -57,18 +57,17 @@ centos7|ami-0a4497cbe959da512|us-west-2|us-west-2a|
 #### Testing with JavaDemo
 
 Packages Required:
-- java-1.8.0-openjdk
-- java-1.8.0-openjdk-devel
+- openjdk-17-jdk
+- openjdk-17-jre
 
 
 STEPS:
 
-1. Edit javademo.java file and input the Maxscale External IPs.
+1. Edit [Demo.java](scripts/Demo.java) file and input the MaxScale External IPs.
 
-2. Compile the code:
+2. Execute the code:
 
-`javac -cp mariadb-java-client-3.1.4.jar javademo.java`
-
-3. Execute the code:
-
-`java -cp mariadb-java-client-3.1.4.jar:. javademo`
+```
+cd scripts
+javac -cp *.jar Demo.java
+```
